@@ -1,10 +1,16 @@
 package com.githubtrends.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Repository {
     private String name;
     private String description;
     private String language;
+    @JsonProperty("stargazers_count")
     private long stargazersCount;
+    @JsonProperty("html_url")
     private String htmlUrl;
     private Owner owner;
 
