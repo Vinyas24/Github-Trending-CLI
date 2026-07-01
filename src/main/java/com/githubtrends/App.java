@@ -1,13 +1,14 @@
 package com.githubtrends;
 
-/**
- * Hello world!
- *
- */
+import java.io.IOException;
+import com.githubtrends.client.GithubClient;
+
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws IOException, InterruptedException
     {
-        System.out.println( "Hello World!" );
+        GithubClient gitTrend = new GithubClient();
+        String trends = gitTrend.findTrendingRepositories();
+        System.out.println(trends);
     }
 }
