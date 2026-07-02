@@ -10,15 +10,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.githubtrends.model.SearchResponse;
 
 public class GithubClient {
-    private final HttpClient clientReq = HttpClient.newHttpClient();
+    private final HttpClient client = HttpClient.newHttpClient();
+    private final String BASE_URL = "https://api.github.com/search/repositories";
+    private final String SORT = "stars";
+    private final String ORDER = "desc";
+    private final int PER_PAGE = 10;
 
-    public SearchResponse findTrendingRepositories(String language) throws IOException, InterruptedException {
-        String url = "https://api.github.com/search/repositories?q=language:" + language + "&sort=stars&order=desc&per_page=20";
+    public SearchResponse findTrendingRepositories(String language, int count) throws IOException, InterruptedException {
+        String url = BASE_URL + "?q=language:" + language + "&sort=" + SORT + "&order=" + ORDER + "&per_page="
+                + count;
+                System.out.println(url);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
                 .build();
-        HttpResponse<String> response = clientReq.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            
         if (response.statusCode() == 200) {
             ObjectMapper mapper = new ObjectMapper();
             SearchResponse responseJson = mapper.readValue(response.body(), SearchResponse.class);

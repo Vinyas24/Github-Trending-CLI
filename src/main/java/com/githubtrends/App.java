@@ -10,14 +10,27 @@ public class App
     public static void main( String[] args ) throws IOException, InterruptedException
     {
         // String language = ;
-        GithubClient gitTrend = new GithubClient();
-        if(args.length == 0){
-            System.out.println("Enter language in <language>");
+        GithubClient githubTrend = new GithubClient();
+        
+        if(args.length <= 1){
+            System.out.println("Usage : java app <language> <repository-count>");
             return;
         }
-        SearchResponse trends = gitTrend.findTrendingRepositories(args[0]);
+        int count = 0;
+        try{
+            count = Integer.parseInt(args[1]);
+            if(count <= 0) {
+                System.out.println("Enter positive number");
+                return;
+            }
+        }
+        catch(NumberFormatException e){
+            System.out.println("Enter valid number for <repository-count>");
+            return;
+        }
+        SearchResponse trends = githubTrend.findTrendingRepositories(args[0], count);
         
-        System.out.println("---------------------");
+        System.out.println("============================");
         for(int i = 0; i < trends.getItems().size();i++){
             Repository response = trends.getItems().get(i);
             System.out.println("#" + (i+1) + " " + response.getName());
@@ -27,5 +40,6 @@ public class App
             System.out.println("Repository : " + response.getHtmlUrl());
             System.out.println("---------------------");
         }
+        System.out.println("============================");
     }
 }
