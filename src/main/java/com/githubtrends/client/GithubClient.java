@@ -12,10 +12,10 @@ import com.githubtrends.model.SearchResponse;
 public class GithubClient {
     private final HttpClient clientReq = HttpClient.newHttpClient();
 
-    public SearchResponse findTrendingRepositories() throws IOException, InterruptedException {
+    public SearchResponse findTrendingRepositories(String language) throws IOException, InterruptedException {
+        String url = "https://api.github.com/search/repositories?q=language:" + language + "&sort=stars&order=desc&per_page=20";
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(
-                        "https://api.github.com/search/repositories?q=language:java&sort=stars&order=desc&per_page=20"))
+                .uri(URI.create(url))
                 .GET()
                 .build();
         HttpResponse<String> response = clientReq.send(request, HttpResponse.BodyHandlers.ofString());
@@ -23,7 +23,8 @@ public class GithubClient {
             ObjectMapper mapper = new ObjectMapper();
             SearchResponse responseJson = mapper.readValue(response.body(), SearchResponse.class);
             return responseJson;
-        } else
+        } else {
             throw new IOException(response.statusCode() + " Error : IOException occured.!");
+        }
     }
 }
