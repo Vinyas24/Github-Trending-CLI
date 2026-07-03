@@ -9,7 +9,7 @@ public class App
 {
     public static void main( String[] args ) throws IOException, InterruptedException
     {
-        // String language = ;
+        
         GithubClient githubTrend = new GithubClient();
         
         if(args.length <= 1){

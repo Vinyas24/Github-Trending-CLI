@@ -14,12 +14,11 @@ public class GithubClient {
     private final String BASE_URL = "https://api.github.com/search/repositories";
     private final String SORT = "stars";
     private final String ORDER = "desc";
-    private final int PER_PAGE = 10;
 
+    private final ObjectMapper mapper = new ObjectMapper();
     public SearchResponse findTrendingRepositories(String language, int count) throws IOException, InterruptedException {
         String url = BASE_URL + "?q=language:" + language + "&sort=" + SORT + "&order=" + ORDER + "&per_page="
                 + count;
-                System.out.println(url);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -27,9 +26,7 @@ public class GithubClient {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             
         if (response.statusCode() == 200) {
-            ObjectMapper mapper = new ObjectMapper();
-            SearchResponse responseJson = mapper.readValue(response.body(), SearchResponse.class);
-            return responseJson;
+            return mapper.readValue(response.body(), SearchResponse.class);
         } else {
             throw new IOException(response.statusCode() + " Error : IOException occured.!");
         }
