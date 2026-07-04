@@ -15,7 +15,7 @@ public class App {
             CliArguments cliArgument = CliArguments.parse(args);
 
             SearchResponse trends = githubClient.findTrendingRepositories(cliArgument.getLanguage(),
-                    cliArgument.getCount());
+                    cliArgument.getCount(),cliArgument.getSort(), cliArgument.getOrder());
 
             RepositoryPrinter.printRepositories(trends.getItems());
 
