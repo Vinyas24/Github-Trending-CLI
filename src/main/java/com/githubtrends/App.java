@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.githubtrends.cli.CliArguments;
 import com.githubtrends.client.GithubClient;
 import com.githubtrends.model.SearchResponse;
+import com.githubtrends.service.RepositoryFilter;
 import com.githubtrends.ui.RepositoryPrinter;
 
 public class App {
@@ -14,10 +15,10 @@ public class App {
 
             CliArguments cliArgument = CliArguments.parse(args);
 
-            SearchResponse trends = githubClient.findTrendingRepositories(cliArgument.getLanguage(),
+            SearchResponse searchResponse = githubClient.findTrendingRepositories(cliArgument.getLanguage(),
                     cliArgument.getCount(),cliArgument.getSort(), cliArgument.getOrder());
-
-            RepositoryPrinter.printRepositories(trends.getItems());
+            RepositoryFilter repositoryFilter = new RepositoryFilter();
+            RepositoryPrinter.printRepositories(repositoryFilter.filterByMinimumStars(searchResponse.getItems(),50000));
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
