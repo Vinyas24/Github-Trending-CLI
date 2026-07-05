@@ -1,7 +1,9 @@
 package com.githubtrends.cli;
 
+
 public class CliArguments {
     public static CliArguments parse(String[] args) throws IllegalArgumentException {
+        
         if (args.length < 2 || args.length % 2 == 1) {
             throw new IllegalArgumentException(
                     "Usage: java App <language> <repository-count> [--sort value] [--order value] [--page value] [--min-stars value]");
@@ -10,8 +12,8 @@ public class CliArguments {
         try {
             count = Integer.parseInt(args[1]);
             if (count <= 0 || count > 100) {
-                throw new IllegalArgumentException("Repository count must be between 1 and 100.\n" + 
-                                        "GitHub Search API allows a maximum of 100 results per page.");
+                throw new IllegalArgumentException("Repository count must be between 1 and 100.\n" +
+                        "GitHub Search API allows a maximum of 100 results per page.");
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Repository count must be a valid integer.");
