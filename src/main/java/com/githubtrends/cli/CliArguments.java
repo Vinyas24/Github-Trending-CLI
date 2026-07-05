@@ -9,8 +9,9 @@ public class CliArguments {
         int count;
         try {
             count = Integer.parseInt(args[1]);
-            if (count <= 0) {
-                throw new IllegalArgumentException("Repository count must be greater than 0.");
+            if (count <= 0 || count > 100) {
+                throw new IllegalArgumentException("Repository count must be between 1 and 100.\n" + 
+                                        "GitHub Search API allows a maximum of 100 results per page.");
             }
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Repository count must be a valid integer.");
