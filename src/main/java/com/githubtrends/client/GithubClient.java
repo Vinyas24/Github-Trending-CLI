@@ -18,9 +18,9 @@ public class GithubClient {
     // private final String ORDER = "desc";
 
     private final ObjectMapper mapper = new ObjectMapper();
-    public SearchResponse findTrendingRepositories(String language, int count, SortType sort, OrderType order) throws IOException, InterruptedException {
+    public SearchResponse findTrendingRepositories(String language, int count, SortType sort, OrderType order, int page) throws IOException, InterruptedException {
         String url = BASE_URL + "?q=language:" + language + "&sort=" + sort.getApiValue() + "&order=" + order.getApiValue() + "&per_page="
-                + count;
+                + count + "&page=" + page;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()

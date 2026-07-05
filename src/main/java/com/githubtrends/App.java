@@ -16,7 +16,7 @@ public class App {
             CliArguments cliArgument = CliArguments.parse(args);
 
             SearchResponse searchResponse = githubClient.findTrendingRepositories(cliArgument.getLanguage(),
-                    cliArgument.getCount(),cliArgument.getSort(), cliArgument.getOrder());
+                    cliArgument.getCount(),cliArgument.getSort(), cliArgument.getOrder(), cliArgument.getPage());
             RepositoryFilter repositoryFilter = new RepositoryFilter();
             RepositoryPrinter.printRepositories(repositoryFilter.filterByMinimumStars(searchResponse.getItems(),50000));
 
