@@ -1,22 +1,23 @@
 package com.githubtrends.cli;
 
+import com.githubtrends.exceptions.InvalidCliArgumentException;
 
 public class CliArguments {
-    public static CliArguments parse(String[] args) throws IllegalArgumentException {
+    public static CliArguments parse(String[] args) {
         
         if (args.length < 2 || args.length % 2 == 1) {
-            throw new IllegalArgumentException(
+            throw new InvalidCliArgumentException(
                     "Usage: java App <language> <repository-count> [--sort value] [--order value] [--page value] [--min-stars value]");
         }
         int count;
         try {
             count = Integer.parseInt(args[1]);
             if (count <= 0 || count > 100) {
-                throw new IllegalArgumentException("Repository count must be between 1 and 100.\n" +
+                throw new InvalidCliArgumentException("Repository count must be between 1 and 100.\n" +
                         "GitHub Search API allows a maximum of 100 results per page.");
             }
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Repository count must be a valid integer.");
+            throw new InvalidCliArgumentException("Repository count must be a valid integer.");
         }
 
         SortType sort = SortType.STARS;
@@ -25,46 +26,46 @@ public class CliArguments {
         int minimumStars = 0;
 
         for (int i = 2; i < args.length; i += 2) {
-            if (args[i].equals("--sort")) {
+            if ("--sort".equals(args[i])) {
                 try {
                     sort = SortType.valueOf(args[i + 1].toUpperCase());
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(
+                    throw new InvalidCliArgumentException(
                             "Invalid sort type: " + args[i + 1] + ".\nValid values: stars, forks, updated.");
                 }
             }
 
-            else if (args[i].equals("--order")) {
+            else if ("--order".equals(args[i])) {
                 try {
                     order = OrderType.valueOf(args[i + 1].toUpperCase());
                 } catch (IllegalArgumentException e) {
-                    throw new IllegalArgumentException(
+                    throw new InvalidCliArgumentException(
                             "Invalid order type: " + args[i + 1] + ".\nValid values: asc, desc");
                 }
 
             }
 
-            else if (args[i].equals("--page")) {
+            else if ("--page".equals(args[i])) {
                 try {
                     page = Integer.parseInt(args[i + 1]);
                     if (page <= 0) {
-                        throw new IllegalArgumentException("Page number must be a positive value.");
+                        throw new InvalidCliArgumentException("Page number must be a positive value.");
                     }
                 } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Page number must be a valid integer.");
+                    throw new InvalidCliArgumentException("Page number must be a valid integer.");
                 }
 
-            } else if (args[i].equals("--min-stars")) {
+            } else if ("--min-stars".equals(args[i])) {
                 try {
                     minimumStars = Integer.parseInt(args[i + 1]);
                     if (minimumStars < 0) {
-                        throw new IllegalArgumentException("Minimum stars must be 0 or greater.");
+                        throw new InvalidCliArgumentException("Minimum stars must be 0 or greater.");
                     }
                 } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Minimum stars must be a valid integer.");
+                    throw new InvalidCliArgumentException("Minimum stars must be a valid integer.");
                 }
             } else {
-                throw new IllegalArgumentException(
+                throw new InvalidCliArgumentException(
                         "Found unknown flag: " + args[i] + ".\nValid flags: --sort, --order, --page, --min-stars");
             }
         }
