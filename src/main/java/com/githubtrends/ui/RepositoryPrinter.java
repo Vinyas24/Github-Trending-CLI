@@ -22,7 +22,7 @@ public class RepositoryPrinter {
                 (repository.getLanguage()) == null ? "N/A" : repository.getLanguage());
         System.out.printf("%-"+LABEL_WIDTH+"s : %s%n", "⭐ Stars", NUMBER_FORMAT.format(repository.getStargazersCount()));
         System.out.printf("%-"+LABEL_WIDTH+"s : %s%n", "📎 Repository", repository.getHtmlUrl());
-        System.out.println("---------------------");
+        System.out.println("-------------------------------------------------------");
     }
 
     public static void printFooter(int total) {
