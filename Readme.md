@@ -1,5 +1,7 @@
 # 🚀 GitHub Trending CLI
 
+[![Java CI with Maven](https://github.com/Vinyas24/Github-Trending-CLI/actions/workflows/maven.yml/badge.svg)](https://github.com/Vinyas24/Github-Trending-CLI/actions/workflows/maven.yml)
+
 A Java-based Command Line Interface (CLI) application that fetches trending GitHub repositories using the GitHub Search API.
 
 The application allows users to search repositories by programming language and customize results using sorting, ordering, pagination, and filtering options.
