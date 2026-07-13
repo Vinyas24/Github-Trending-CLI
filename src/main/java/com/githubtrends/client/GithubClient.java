@@ -16,7 +16,16 @@ import com.githubtrends.logging.LoggerConfig;
 import com.githubtrends.model.SearchResponse;
 
 public class GithubClient {
-    private final HttpClient client = HttpClient.newHttpClient();
+    private final HttpClient client;
+
+    public GithubClient() {
+        this(HttpClient.newHttpClient());
+    }
+
+    public GithubClient(HttpClient client) {
+        this.client = client;
+    }
+
     private static final Logger LOGGER = LoggerConfig.getLogger();
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -32,9 +41,9 @@ public class GithubClient {
         LOGGER.info("Sending request to GitHub API.");
         LOGGER.info("Request URL: " + url);
         HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create(url))
-        .GET()
-        .build();
+                .uri(URI.create(url))
+                .GET()
+                .build();
 
         long startTime = System.currentTimeMillis();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
