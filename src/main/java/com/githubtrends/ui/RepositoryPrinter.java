@@ -28,12 +28,12 @@ public class RepositoryPrinter {
         printTitle("[#" + (rank + 1) + "] " + repository.getName());
 
         System.out.println(AnsiColors.BRIGHT_BLACK + MIDDLE_BORDER + AnsiColors.RESET);
-        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_CYAN,
-                "◉ Owner", AnsiColors.RESET, padRight(owner, CONTENT_WIDTH));
-        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_PURPLE,
-                "⌨ Language", AnsiColors.RESET, padRight(language, CONTENT_WIDTH));
-        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s│%n", AnsiColors.BRIGHT_YELLOW,
-                "★ Stars", AnsiColors.RESET, AnsiColors.BRIGHT_YELLOW,
+        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s│%n", AnsiColors.BRIGHT_CYAN,
+                "◉ Owner", AnsiColors.RESET, AnsiColors.BOLD, padRight(owner, CONTENT_WIDTH), AnsiColors.RESET);
+        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s│%n", AnsiColors.BRIGHT_PURPLE,
+                "⌨ Language", AnsiColors.RESET, AnsiColors.BOLD, padRight(language, CONTENT_WIDTH), AnsiColors.RESET);
+        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s│%n", AnsiColors.BRIGHT_YELLOW,
+                "★ Stars", AnsiColors.RESET, AnsiColors.BRIGHT_YELLOW, AnsiColors.BOLD,
                 padRight(NUMBER_FORMAT.format(repository.getStargazersCount()), CONTENT_WIDTH), AnsiColors.RESET);
         printWrappedLine("✎ Description", description, false);
         printWrappedLine("↗ Repository", url, true);
@@ -58,22 +58,22 @@ public class RepositoryPrinter {
 
             if (firstLine) {
                 if (isUrl) {
-                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, label,
-                            AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE,
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, label,
+                            AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, AnsiColors.BOLD,
                             padRight(part, CONTENT_WIDTH), AnsiColors.RESET);
                 } else {
-                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_RED, label,
-                            AnsiColors.RESET, padRight(part, CONTENT_WIDTH));
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s│%n", AnsiColors.BRIGHT_WHITE, label,
+                            AnsiColors.RESET, AnsiColors.BOLD, padRight(part, CONTENT_WIDTH), AnsiColors.RESET);
                 }
                 firstLine = false;
             } else {
                 if (isUrl) {
-                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, "",
-                            AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE,
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, "",
+                            AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, AnsiColors.BOLD,
                             padRight(part, CONTENT_WIDTH), AnsiColors.RESET);
                 } else {
-                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s│%n", AnsiColors.BRIGHT_RED, "",
-                            AnsiColors.RESET, padRight(part, CONTENT_WIDTH));
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s│%n", AnsiColors.BRIGHT_WHITE, "",
+                            AnsiColors.RESET, AnsiColors.BOLD, padRight(part, CONTENT_WIDTH), AnsiColors.RESET);
                 }
             }
 
@@ -82,21 +82,21 @@ public class RepositoryPrinter {
 
         if (firstLine) {
             if (isUrl) {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, label,
-                        AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, padRight(text, CONTENT_WIDTH),
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, label,
+                        AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, AnsiColors.BOLD, padRight(text, CONTENT_WIDTH),
                         AnsiColors.RESET);
             } else {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_RED, label,
-                        AnsiColors.RESET, padRight(text, CONTENT_WIDTH));
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s│%n", AnsiColors.BRIGHT_WHITE, label,
+                        AnsiColors.RESET, AnsiColors.BOLD, padRight(text, CONTENT_WIDTH), AnsiColors.RESET);
             }
         } else {
             if (isUrl) {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, "",
-                        AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, padRight(text, CONTENT_WIDTH),
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, "",
+                        AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, AnsiColors.BOLD, padRight(text, CONTENT_WIDTH),
                         AnsiColors.RESET);
             } else {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s│%n", AnsiColors.BRIGHT_RED, "", AnsiColors.RESET,
-                        padRight(text, CONTENT_WIDTH));
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s│%n", AnsiColors.BRIGHT_WHITE, "", AnsiColors.RESET,
+                        AnsiColors.BOLD, padRight(text, CONTENT_WIDTH), AnsiColors.RESET);
             }
         }
     }

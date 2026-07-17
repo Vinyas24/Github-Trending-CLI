@@ -7,6 +7,7 @@
   <packaging>jar</packaging>
   <version>2.0.0</version>
   <name>github-trending-cli</name>
+  
   <url>http://maven.apache.org</url>
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
@@ -38,6 +39,7 @@
     </dependency>
   </dependencies>
   <build>
+    <finalName>github-trending-cli</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
