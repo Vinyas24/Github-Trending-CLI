@@ -6,16 +6,13 @@ import java.util.List;
 import com.githubtrends.model.Repository;
 
 public class RepositoryPrinter {
-    private static final String SEPARATOR = "================================================================";
+    private static final String SEPARATOR = "═".repeat(70);
     private static final int LABEL_WIDTH = 20;
-
-    public static void printHeader() {
-        System.out.println(SEPARATOR);
-        System.out.printf("%42s%n",
-                AnsiColors.BOLD + AnsiColors.BRIGHT_CYAN + "🚀GitHub Trending Repositories📈" + AnsiColors.RESET);
-        System.out.println(SEPARATOR);
-        System.out.println();
-    }
+    private static final int BOX_WIDTH = 66;
+    private static final int CONTENT_WIDTH = BOX_WIDTH - LABEL_WIDTH - 4;
+    private static final String TOP_BORDER = "┌" + "─".repeat(BOX_WIDTH) + "┐";
+    private static final String MIDDLE_BORDER = "├" + "─".repeat(BOX_WIDTH) + "┤";
+    private static final String BOTTOM_BORDER = "└" + "─".repeat(BOX_WIDTH) + "┘";
 
     private static final NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
 
@@ -26,66 +23,113 @@ public class RepositoryPrinter {
         String description = repository.getDescription() == null || repository.getDescription().isBlank() ? "N/A"
                 : repository.getDescription();
         String url = repository.getHtmlUrl() == null ? "N/A" : repository.getHtmlUrl();
-        System.out.println(AnsiColors.BRIGHT_BLACK + "┌────────────────────────────────────────────────────────────────"
-                + AnsiColors.RESET);
-        System.out.printf("│ %s#%d %s%s%n", AnsiColors.BOLD + AnsiColors.BRIGHT_GREEN, rank + 1, repository.getName(),
-                AnsiColors.RESET);
-        System.out.println(AnsiColors.BRIGHT_BLACK + "├────────────────────────────────────────────────────────────────"
-                + AnsiColors.RESET);
-        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%n", AnsiColors.BRIGHT_CYAN, "👤 Owner", AnsiColors.RESET,
-                owner);
-        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%n", AnsiColors.BRIGHT_CYAN, "💻 Language",
-                AnsiColors.RESET, language);
-        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%n", AnsiColors.BRIGHT_CYAN, "✴️ Stars",
-                AnsiColors.RESET, AnsiColors.BRIGHT_YELLOW, NUMBER_FORMAT.format(repository.getStargazersCount()),
-                AnsiColors.RESET);
-        printWrappedLine("📝 Description", description);
-        printWrappedLine("🔗 Repository", url);
-        System.out.println(AnsiColors.BRIGHT_BLACK + "└────────────────────────────────────────────────────────────────"
-                + AnsiColors.RESET);
-        System.out.println();
+
+        System.out.println(AnsiColors.BRIGHT_BLACK + TOP_BORDER + AnsiColors.RESET);
+        printTitle("[#" + (rank + 1) + "] " + repository.getName());
+
+        System.out.println(AnsiColors.BRIGHT_BLACK + MIDDLE_BORDER + AnsiColors.RESET);
+        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_CYAN,
+                "◉ Owner", AnsiColors.RESET, padRight(owner, CONTENT_WIDTH));
+        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_PURPLE,
+                "⌨ Language", AnsiColors.RESET, padRight(language, CONTENT_WIDTH));
+        System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s│%n", AnsiColors.BRIGHT_YELLOW,
+                "★ Stars", AnsiColors.RESET, AnsiColors.BRIGHT_YELLOW,
+                padRight(NUMBER_FORMAT.format(repository.getStargazersCount()), CONTENT_WIDTH), AnsiColors.RESET);
+        printWrappedLine("✎ Description", description, false);
+        printWrappedLine("↗ Repository", url, true);
+
+        System.out.println(AnsiColors.BRIGHT_BLACK + BOTTOM_BORDER + AnsiColors.RESET);
     }
 
-    private static void printWrappedLine(String label, String text) {
-        final int MAX_WIDTH = 70;
+    private static void printWrappedLine(String label, String text, boolean isUrl) {
+        final int MAX_WIDTH = CONTENT_WIDTH;
         if (text == null || text.isBlank()) {
             text = "N/A";
         }
         boolean firstLine = true;
+
         while (text.length() > MAX_WIDTH) {
             int breakPoint = text.lastIndexOf(' ', MAX_WIDTH);
             if (breakPoint == -1) {
                 breakPoint = MAX_WIDTH;
             }
+
+            String part = text.substring(0, breakPoint);
+
             if (firstLine) {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%n", AnsiColors.BRIGHT_CYAN, label,
-                        AnsiColors.RESET, text.substring(0, breakPoint));
+                if (isUrl) {
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, label,
+                            AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE,
+                            padRight(part, CONTENT_WIDTH), AnsiColors.RESET);
+                } else {
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_RED, label,
+                            AnsiColors.RESET, padRight(part, CONTENT_WIDTH));
+                }
                 firstLine = false;
             } else {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%n", AnsiColors.BRIGHT_CYAN, "", AnsiColors.RESET,
-                        text.substring(0, breakPoint));
+                if (isUrl) {
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, "",
+                            AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE,
+                            padRight(part, CONTENT_WIDTH), AnsiColors.RESET);
+                } else {
+                    System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s│%n", AnsiColors.BRIGHT_RED, "",
+                            AnsiColors.RESET, padRight(part, CONTENT_WIDTH));
+                }
             }
+
             text = text.substring(breakPoint).trim();
         }
+
         if (firstLine) {
-            if ("🔗 Repository".equals(label)) {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s%n",AnsiColors.BRIGHT_CYAN,label,AnsiColors.RESET,AnsiColors.UNDERLINE,AnsiColors.BRIGHT_BLUE,text,AnsiColors.RESET);
+            if (isUrl) {
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, label,
+                        AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, padRight(text, CONTENT_WIDTH),
+                        AnsiColors.RESET);
             } else {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s%n",AnsiColors.BRIGHT_CYAN,label,AnsiColors.RESET,text);
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s : %s│%n", AnsiColors.BRIGHT_RED, label,
+                        AnsiColors.RESET, padRight(text, CONTENT_WIDTH));
             }
         } else {
-            if ("🔗 Repository".equals(label)) {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s%n",AnsiColors.BRIGHT_CYAN,"",AnsiColors.RESET,AnsiColors.UNDERLINE,AnsiColors.BRIGHT_BLUE,text,AnsiColors.RESET);
+            if (isUrl) {
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%s%s%s│%n", AnsiColors.BRIGHT_BLUE, "",
+                        AnsiColors.RESET, AnsiColors.UNDERLINE, AnsiColors.BRIGHT_BLUE, padRight(text, CONTENT_WIDTH),
+                        AnsiColors.RESET);
             } else {
-                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s%n",AnsiColors.BRIGHT_CYAN,"",AnsiColors.RESET,text);
+                System.out.printf("│ %s%-" + LABEL_WIDTH + "s%s   %s│%n", AnsiColors.BRIGHT_RED, "", AnsiColors.RESET,
+                        padRight(text, CONTENT_WIDTH));
             }
         }
     }
 
+    private static void printTitle(String title) {
+        System.out.print("│ ");
+        System.out.print(AnsiColors.BOLD + AnsiColors.BRIGHT_GREEN + title + AnsiColors.RESET);
+        System.out.print(" ".repeat(Math.max(0, BOX_WIDTH - title.length() - 1)));
+        System.out.println("│");
+    }
+
+    private static void printCentered(String text) {
+        int width = SEPARATOR.length();
+        int padding = Math.max(0, (width - text.length()) / 2);
+        System.out.printf("%" + (padding + text.length()) + "s%n", text);
+    }
+
+    public static void printHeader() {
+        System.out.println(SEPARATOR);
+        printCentered(
+                AnsiColors.BOLD + AnsiColors.BRIGHT_CYAN + "⌬ GitHub Trending Repositories |⎇" + AnsiColors.RESET);
+        System.out.println(SEPARATOR);
+        System.out.println();
+    }
+
     public static void printFooter(int total) {
         System.out.println(SEPARATOR);
-        System.out.println("Total Repositories : " + total);
+        printCentered(AnsiColors.BOLD + AnsiColors.BRIGHT_GREEN + "✔ Total Repositories : " + total + AnsiColors.RESET);
         System.out.println(SEPARATOR);
+    }
+
+    private static String padRight(String text, int width) {
+        return String.format("%-" + width + "s", text);
     }
 
     public static void printRepositories(List<Repository> repositories) {
