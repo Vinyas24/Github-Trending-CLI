@@ -1,8 +1,12 @@
-# 🚀 GitHub Trending CLI
+# 🚀 GitHub Trending CLI 📈
 
 [![Java CI with Maven](https://github.com/Vinyas24/Github-Trending-CLI/actions/workflows/maven.yml/badge.svg)](https://github.com/Vinyas24/Github-Trending-CLI/actions/workflows/maven.yml)
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Maven](https://img.shields.io/badge/Maven-3.9+-red)
+![License](https://img.shields.io/badge/License-MIT-green)
+[![Release](https://img.shields.io/github/v/release/Vinyas24/Github-Trending-CLI)](https://github.com/Vinyas24/Github-Trending-CLI/releases/tag/v2.0.0)
 
-A Java-based Command Line Interface (CLI) application that fetches trending GitHub repositories using the GitHub Search API.
+A Java-based Command Line Interface (CLI) application that fetches trending GitHub repositories using the GitHub Search API. It supports filtering, sorting, pagination, and customizable search options through a clean and user-friendly terminal interface.
 
 The application allows users to search repositories by programming language and customize results using sorting, ordering, pagination, and filtering options.
 
@@ -12,13 +16,14 @@ The application allows users to search repositories by programming language and 
 
 - 🔍 Search repositories by programming language
 - ⭐ Sort by stars, forks, or last updated
-- 📈 Sort results in ascending or descending order
+- 📈 Support ascending and descending order
 - 📄 Pagination support
 - ⭐ Filter repositories by minimum stars
-- 🧩 Clean Builder Pattern for API URL generation
+- 🧩 Builder Pattern for API URL construction
+- 🎨 Rich terminal UI with colors and boxed output
 - ⚠️ Custom exception handling
 - 📖 Built-in `--help` command
-- 🖥️ Clean and formatted CLI output
+- 📦 Standalone executable JAR
 
 ---
 
@@ -45,9 +50,12 @@ src
 
 - Java 21
 - Maven
-- GitHub Search API
+- GitHub Search REST API
 - Jackson Databind
 - Java HttpClient
+- JUnit 5
+- Mockito
+- GitHub Actions
 
 ---
 
@@ -73,18 +81,30 @@ mvn clean compile
 
 ---
 
+## 📥 Download
+
+Download the latest executable JAR from the [Releases](https://github.com/Vinyas24/Github-Trending-CLI/releases/) page.
+
+Run it using:
+
+```bash
+java -jar github-trending-cli.jar java 10
+```
+
+---
+
 ## ▶️ Running the Application
 
 Basic Usage
 
 ```bash
-java App <language> <count>
+java -jar github-trending-cli.jar <language> <count>
 ```
 
 Example
 
 ```bash
-java App java 10
+java -jar github-trending-cli.jar java 10
 ```
 
 ---
@@ -106,74 +126,59 @@ java App java 10
 Fetch 10 Java repositories
 
 ```bash
-java App java 10
+java -jar github-trending-cli.jar java 10
 ```
 
 Sort by forks
 
 ```bash
-java App java 10 --sort forks
+java -jar github-trending-cli.jar java 10 --sort forks
 ```
 
 Ascending order
 
 ```bash
-java App java 10 --order asc
+java -jar github-trending-cli.jar java 10 --order asc
 ```
 
 Second page
 
 ```bash
-java App java 10 --page 2
+java -jar github-trending-cli.jar java 10 --page 2
 ```
 
 Repositories with at least 50,000 stars
 
 ```bash
-java App java 100 --min-stars 50000
+java -jar github-trending-cli.jar java 100 --min-stars 50000
 ```
 
 Combine multiple options
 
 ```bash
-java App java 20 --sort stars --order desc --page 2 --min-stars 10000
+java -jar github-trending-cli.jar java 20 --sort stars --order desc --page 2 --min-stars 10000
 ```
 
 Display help
 
 ```bash
-java App --help
+java -jar github-trending-cli.jar --help
 ```
 
 ---
 
 ## 🖥️ Sample Output
+### Repository Output
 
-```
-====================================
-    GitHub Trending Repositories
-====================================
+<p align="center">
+  <img src="assets/image.png" alt="CLI Output" width="900">
+</p>
 
-#1 hello-algo
+### Help
 
-👤 Owner      : krahets
-💻 Language   : Java
-⭐ Stars       : 128,154
-📎 Repository : https://github.com/krahets/hello-algo
-
----------------------
-
-#2 spring-boot
-
-👤 Owner      : spring-projects
-💻 Language   : Java
-⭐ Stars       : 81,063
-📎 Repository : https://github.com/spring-projects/spring-boot
-
-====================================
-Total Repositories : 10
-====================================
-```
+<p align="center">
+  <img src="assets/help.png" alt="Help command" width="900">
+</p>
 
 ---
 
@@ -199,26 +204,23 @@ Examples:
 
 The project follows clean object-oriented design principles.
 
-- Builder Pattern for API URL creation
-- Separate CLI parser
-- Service layer for filtering
-- Dedicated UI layer for printing
-- Custom exception classes
-- Immutable CLI argument object
+- Builder Pattern for GitHub API query construction
+- Dedicated CLI argument parser
+- Service layer for repository filtering
+- Separate UI layer for formatted terminal output
+- Custom exception hierarchy
+- Immutable CLI argument model
 
 ---
 
 ## 📚 Future Improvements
 
-- Unit Tests (JUnit 5)
 - GitHub Personal Access Token support
-- Colored terminal output
 - Repository topics filter
 - Export results to JSON/CSV
 - Logging
-- GitHub Actions CI/CD
-- Executable JAR release
 - Docker support
+- Interactive mode
 
 ---
 
@@ -240,4 +242,4 @@ This project is licensed under the MIT License.
 
 **Vinyas**
 
-GitHub: https://github.com/Vinyas24
+GitHub: **[@Vinyas24](https://github.com/Vinyas24)**
