@@ -11,13 +11,15 @@ public class LoggerConfig {
     private static final Logger LOGGER = Logger.getLogger("GitHubTrendingCLI");
 
     static {
+        // Disable console logging 
+        LOGGER.setUseParentHandlers(false);
+
         // Uncomment following block to enable file logging.
         // try {
         //     Files.createDirectories(Paths.get("logs/"));
         //     FileHandler fileHandler = new FileHandler("logs/github-trending-cli.log");
         //     fileHandler.setFormatter(new SimpleFormatter());
         //     LOGGER.addHandler(fileHandler);
-        //     LOGGER.setUseParentHandlers(false);
         // } catch (IOException e) {
         //     System.err.println("Failed to initialize logger: " + e.getMessage());
         // }
