@@ -4,10 +4,10 @@ import com.githubtrends.exceptions.InvalidCliArgumentException;
 
 public class CliArguments {
     public static CliArguments parse(String[] args) {
-        
+
         if (args.length < 2 || args.length % 2 == 1) {
             throw new InvalidCliArgumentException(
-                    "Usage: java App <language> <repository-count> [--sort value] [--order value] [--page value] [--min-stars value]");
+                    "Usage: java App <language> <repository-count> [--sort value] [--order value] [--duration value] [--page value] [--min-stars value]");
         }
         int count;
         try {
@@ -24,6 +24,7 @@ public class CliArguments {
         OrderType order = OrderType.DESC;
         int page = 1;
         int minimumStars = 0;
+        DurationType duration = DurationType.WEEK;
 
         for (int i = 2; i < args.length; i += 2) {
             if ("--sort".equals(args[i])) {
@@ -33,19 +34,21 @@ public class CliArguments {
                     throw new InvalidCliArgumentException(
                             "Invalid sort type: " + args[i + 1] + ".\nValid values: stars, forks, updated.");
                 }
-            }
-
-            else if ("--order".equals(args[i])) {
+            } else if ("--order".equals(args[i])) {
                 try {
                     order = OrderType.valueOf(args[i + 1].toUpperCase());
                 } catch (IllegalArgumentException e) {
                     throw new InvalidCliArgumentException(
                             "Invalid order type: " + args[i + 1] + ".\nValid values: asc, desc");
                 }
-
-            }
-
-            else if ("--page".equals(args[i])) {
+            } else if ("--duration".equals(args[i])) {
+                try {
+                    duration = DurationType.valueOf(args[i + 1].toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    throw new InvalidCliArgumentException(
+                            "Invalid duration: " + args[i + 1] + ".\nValid values: day, week, month, year");
+                }
+            } else if ("--page".equals(args[i])) {
                 try {
                     page = Integer.parseInt(args[i + 1]);
                     if (page <= 0) {
@@ -54,7 +57,6 @@ public class CliArguments {
                 } catch (NumberFormatException e) {
                     throw new InvalidCliArgumentException("Page number must be a valid integer.");
                 }
-
             } else if ("--min-stars".equals(args[i])) {
                 try {
                     minimumStars = Integer.parseInt(args[i + 1]);
@@ -66,11 +68,12 @@ public class CliArguments {
                 }
             } else {
                 throw new InvalidCliArgumentException(
-                        "Found unknown flag: " + args[i] + ".\nValid flags: --sort, --order, --page, --min-stars");
+                        "Found unknown flag: " + args[i]
+                                + ".\nValid flags: --sort, --order, --duration, --page, --min-stars");
             }
         }
 
-        return new CliArguments(args[0], count, sort, order, page, minimumStars);
+        return new CliArguments(args[0], count, sort, order, duration, page, minimumStars);
     }
 
     private final String language;
@@ -79,6 +82,7 @@ public class CliArguments {
     private final OrderType order;
     private final int page;
     private final int minimumStars;
+    private final DurationType duration;
 
     public int getPage() {
         return page;
@@ -100,16 +104,23 @@ public class CliArguments {
         return order;
     }
 
-    private CliArguments(String language, int count, SortType sort, OrderType order, int page, int minimumStars) {
+    public int getMinimumStars() {
+        return minimumStars;
+    }
+
+    public DurationType getDuration() {
+        return duration;
+    }
+
+    private CliArguments(String language, int count, SortType sort, OrderType order, DurationType duration, int page,
+            int minimumStars) {
         this.language = language;
         this.count = count;
         this.sort = sort;
         this.order = order;
+        this.duration = duration;
         this.page = page;
         this.minimumStars = minimumStars;
     }
 
-    public int getMinimumStars() {
-        return minimumStars;
-    }
 }

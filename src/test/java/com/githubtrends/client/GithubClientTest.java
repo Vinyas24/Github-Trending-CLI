@@ -15,6 +15,7 @@ import java.net.http.HttpResponse;
 
 import org.junit.jupiter.api.Test;
 
+import com.githubtrends.cli.DurationType;
 import com.githubtrends.cli.OrderType;
 import com.githubtrends.cli.SortType;
 import com.githubtrends.exceptions.GithubApiException;
@@ -34,6 +35,7 @@ public class GithubClientTest {
                 10,
                 SortType.STARS,
                 OrderType.DESC,
+                DurationType.WEEK,
                 1);
         assertNotNull(searchResponse);
         assertNotNull(searchResponse.getItems());
@@ -57,6 +59,7 @@ public class GithubClientTest {
                         10,
                         SortType.STARS,
                         OrderType.DESC,
+                        DurationType.WEEK,
                         1));
 
         assertEquals("Authentication failed.", exception.getMessage());
@@ -78,6 +81,7 @@ public class GithubClientTest {
                         10,
                         SortType.STARS,
                         OrderType.DESC,
+                        DurationType.WEEK,
                         1));
         assertEquals("GitHub rate limit exceeded.", exception.getMessage());
         verify(client).send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class));
@@ -98,6 +102,7 @@ public class GithubClientTest {
                         10,
                         SortType.STARS,
                         OrderType.DESC,
+                        DurationType.WEEK,
                         1));
         assertEquals("GitHub resource not found.", exception.getMessage());
         verify(client).send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class));
@@ -118,6 +123,7 @@ public class GithubClientTest {
                         10,
                         SortType.STARS,
                         OrderType.DESC,
+                        DurationType.WEEK,
                         1));
         assertEquals("GitHub server error.", exception.getMessage());
         verify(client).send(any(HttpRequest.class), any(HttpResponse.BodyHandler.class));
@@ -138,6 +144,7 @@ public class GithubClientTest {
                         10,
                         SortType.STARS,
                         OrderType.DESC,
+                        DurationType.WEEK,
                         1));
         assertEquals(
                 "GitHub API returned unexpected status code: 418",

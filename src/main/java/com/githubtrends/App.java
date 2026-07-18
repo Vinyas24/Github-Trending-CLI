@@ -27,13 +27,22 @@ public class App {
         try {
             GithubClient githubClient = new GithubClient();
             CliArguments cliArguments = CliArguments.parse(args);
-            LOGGER.info("Language=" + cliArguments.getLanguage() + ", Count=" + cliArguments.getCount()
-                    + ", Sort=" + cliArguments.getSort() + ", Order=" + cliArguments.getOrder() + ", Page="
-                    + cliArguments.getPage() + ", MinStars=" + cliArguments.getMinimumStars());
+            LOGGER.info("Language=" + cliArguments.getLanguage()
+                    + ", Count=" + cliArguments.getCount()
+                    + ", Sort=" + cliArguments.getSort()
+                    + ", Order=" + cliArguments.getOrder()
+                    + ", Duration= " + cliArguments.getDuration()
+                    + ", Page=" + cliArguments.getPage()
+                    + ", MinStars=" + cliArguments.getMinimumStars());
 
             LOGGER.info("Fetching repositories from GitHub.");
-            SearchResponse searchResponse = githubClient.findTrendingRepositories(cliArguments.getLanguage(),
-                    cliArguments.getCount(), cliArguments.getSort(), cliArguments.getOrder(), cliArguments.getPage());
+            SearchResponse searchResponse = githubClient.findTrendingRepositories(
+                    cliArguments.getLanguage(),
+                    cliArguments.getCount(),
+                    cliArguments.getSort(),
+                    cliArguments.getOrder(),
+                    cliArguments.getDuration(),
+                    cliArguments.getPage());
 
             RepositoryFilter repositoryFilter = new RepositoryFilter();
 

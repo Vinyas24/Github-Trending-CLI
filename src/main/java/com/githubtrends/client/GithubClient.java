@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.githubtrends.builder.GithubUrlBuilder;
+import com.githubtrends.cli.DurationType;
 import com.githubtrends.cli.OrderType;
 import com.githubtrends.cli.SortType;
 import com.githubtrends.exceptions.GithubApiException;
@@ -29,13 +30,14 @@ public class GithubClient {
     private static final Logger LOGGER = LoggerConfig.getLogger();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public SearchResponse findTrendingRepositories(String language, int count, SortType sort, OrderType order, int page)
+    public SearchResponse findTrendingRepositories(String language, int count, SortType sort, OrderType order, DurationType duration, int page)
             throws IOException, InterruptedException {
         String url = new GithubUrlBuilder()
                 .language(language)
                 .count(count)
                 .sort(sort)
                 .order(order)
+                .duration(duration)
                 .page(page)
                 .build();
         LOGGER.info("Sending request to GitHub API.");
