@@ -4,7 +4,7 @@
 ![Java](https://img.shields.io/badge/Java-21-orange)
 ![Maven](https://img.shields.io/badge/Maven-3.9+-red)
 ![License](https://img.shields.io/badge/License-MIT-green)
-[![Release](https://img.shields.io/github/v/release/Vinyas24/Github-Trending-CLI)](https://github.com/Vinyas24/Github-Trending-CLI/releases/tag/v2.0.0)
+[![Release](https://img.shields.io/github/v/release/Vinyas24/Github-Trending-CLI)](https://github.com/Vinyas24/Github-Trending-CLI/releases/latest)
 
 A Java-based Command Line Interface (CLI) application that fetches trending GitHub repositories using the GitHub Search API. It supports filtering, sorting, pagination, and customizable search options through a clean and user-friendly terminal interface.
 
@@ -15,6 +15,7 @@ The application allows users to search repositories by programming language and 
 ## ✨ Features
 
 - 🔍 Search repositories by programming language
+- 📅 Filter repositories by creation date (day, week, month, year)
 - ⭐ Sort by stars, forks, or last updated
 - 📈 Support ascending and descending order
 - 📄 Pagination support
@@ -115,6 +116,7 @@ java -jar github-trending-cli.jar java 10
 |---------|-------------|----------|
 | `--sort` | stars, forks, updated | stars |
 | `--order` | asc, desc | desc |
+| `--duration` | day, week, month, year | week |
 | `--page` | Page number | 1 |
 | `--min-stars` | Minimum repository stars | 0 |
 | `--help` | Show help information | - |
@@ -153,10 +155,16 @@ Repositories with at least 50,000 stars
 java -jar github-trending-cli.jar java 100 --min-stars 50000
 ```
 
+Repositories created this month
+
+```bash
+java -jar github-trending-cli.jar java 20 --duration month
+```
+
 Combine multiple options
 
 ```bash
-java -jar github-trending-cli.jar java 20 --sort stars --order desc --page 2 --min-stars 10000
+java -jar github-trending-cli.jar java 20 --sort stars --order desc --duration month --page 2 --min-stars 10000
 ```
 
 Display help
@@ -192,6 +200,7 @@ Examples:
 - Invalid sort option
 - Invalid order option
 - Invalid page number
+- Invalid duration value
 - Invalid minimum stars value
 - Unknown CLI flags
 - GitHub API rate limit exceeded
@@ -205,7 +214,7 @@ Examples:
 The project follows clean object-oriented design principles.
 
 - Builder Pattern for GitHub API query construction
-- Dedicated CLI argument parser
+- Dedicated CLI argument parser with validation
 - Service layer for repository filtering
 - Separate UI layer for formatted terminal output
 - Custom exception hierarchy
@@ -218,7 +227,7 @@ The project follows clean object-oriented design principles.
 - GitHub Personal Access Token support
 - Repository topics filter
 - Export results to JSON/CSV
-- Logging
+- Search by organization or user
 - Docker support
 - Interactive mode
 

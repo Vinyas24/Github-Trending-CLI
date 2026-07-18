@@ -31,7 +31,7 @@ public class App {
                     + ", Count=" + cliArguments.getCount()
                     + ", Sort=" + cliArguments.getSort()
                     + ", Order=" + cliArguments.getOrder()
-                    + ", Duration= " + cliArguments.getDuration()
+                    + ", Duration=" + cliArguments.getDuration()
                     + ", Page=" + cliArguments.getPage()
                     + ", MinStars=" + cliArguments.getMinimumStars());
 
@@ -52,6 +52,11 @@ public class App {
                     cliArguments.getMinimumStars());
             LOGGER.info("Filtered down to " + filteredRepositories.size() + " repositories.");
 
+            if (filteredRepositories.isEmpty()) {
+                System.out.println("No repositories found.");
+                return;
+            }
+            
             RepositoryPrinter.printRepositories(filteredRepositories);
             LOGGER.info("Application finished successfully.");
         }
